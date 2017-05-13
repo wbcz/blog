@@ -1,0 +1,949 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="keep-alive模式为什么要开启keep-alive模式？
+
+避免下载客户端和服务器再次建立释放连接的开销单用户客户端与任何服务器或代理之间的连接数不应该超过2个。一个代理与其它服务器或代码之间应该使用不超过2 * N的活跃并发连接。这是为了提高HTTP响应时间，避免拥塞（冗余的连接并不能代码执行性能的提升）。
+
+如何开启关闭keep-alive？
+
+http1.0默认是关闭的，启用需要在头上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="http基础">
+<meta property="og:url" content="http://yoursite.com/2017/04/24/internet-http基础/index.html">
+<meta property="og:site_name" content="wbcz">
+<meta property="og:description" content="keep-alive模式为什么要开启keep-alive模式？
+
+避免下载客户端和服务器再次建立释放连接的开销单用户客户端与任何服务器或代理之间的连接数不应该超过2个。一个代理与其它服务器或代码之间应该使用不超过2 * N的活跃并发连接。这是为了提高HTTP响应时间，避免拥塞（冗余的连接并不能代码执行性能的提升）。
+
+如何开启关闭keep-alive？
+
+http1.0默认是关闭的，启用需要在头上">
+<meta property="og:image" content="http://yoursite.com/images/cache.png">
+<meta property="og:image" content="http://yoursite.com/images/userCache.png">
+<meta property="og:image" content="http://yoursite.com/images/trangle.png">
+<meta property="og:updated_time" content="2017-04-27T10:41:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="http基础">
+<meta name="twitter:description" content="keep-alive模式为什么要开启keep-alive模式？
+
+避免下载客户端和服务器再次建立释放连接的开销单用户客户端与任何服务器或代理之间的连接数不应该超过2个。一个代理与其它服务器或代码之间应该使用不超过2 * N的活跃并发连接。这是为了提高HTTP响应时间，避免拥塞（冗余的连接并不能代码执行性能的提升）。
+
+如何开启关闭keep-alive？
+
+http1.0默认是关闭的，启用需要在头上">
+<meta name="twitter:image" content="http://yoursite.com/images/cache.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"Sidebar Position, available value":"left | right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '98',
+      author: 'wbcz'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/24/internet-http基础/"/>
+
+
+
+
+
+  <title> http基础 | wbcz </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  <div class="container one-collumn  page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">wbcz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Web Front-End Engineer</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-categories " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/24/internet-http基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="wbcz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wbcz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                http基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-24T09:34:11+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/internet/" itemprop="url" rel="index">
+                    <span itemprop="name">Internet</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/24/internet-http基础/" class="leancloud_visitors" data-flag-title="http基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="keep-alive模式"><a href="#keep-alive模式" class="headerlink" title="keep-alive模式"></a>keep-alive模式</h2><p>为什么要开启keep-alive模式？</p>
+<blockquote>
+<p>避免下载客户端和服务器再次建立释放连接的开销<br>单用户客户端与任何服务器或代理之间的连接数不应该超过2个。一个代理与其它服务器或代码之间应该使用不超过2 * N的活跃并发连接。这是为了提高HTTP响应时间，避免拥塞（冗余的连接并不能代码执行性能的提升）。</p>
+</blockquote>
+<p>如何开启关闭keep-alive？</p>
+<blockquote>
+<p>http1.0默认是关闭的，启用需要在头上加入：Connection: Keep-Alive<br>http1.1默认开启的，关闭：Connection: close<br>大多数浏览器采用的是http1.1</p>
+</blockquote>
+<p>keep-alive模式如何确定响应数据接收完毕，我们已经知道 了，Keep-Alive模式发送玩数据HTTP服务器不会自动断开连接，所有不能再使用返回EOF（-1）来判定</p>
+<ul>
+<li>Content-Length,表示实体内容的长度，客户端可以根据这个值来判断数据是否接收完成，但是如果没有这个字段呢</li>
+<li>Transfer-Encoding,当客户端向服务器请求一个静态页面或者一张图片时，服务器可以很清楚的知道内容大小，然后通过Content-length消息首部字段告诉客户端 需要接收多少数据。但是如果是动态页面等时，服务器是不可能预先知道内容大小，这时就可以使用Transfer-Encoding：chunk模式来传输 数据了。即如果要一边产生数据，一边发给客户端，服务器就需要使用”Transfer-Encoding: chunked”这样的方式来代替Content-Length。<br>chunk编码将数据分成一块一块的发生。Chunked编码将使用若干个Chunk串连而成，由一个标明长度为0 的chunk标示结束。每个Chunk分为头部和正文两部分，头部内容指定正文的字符总数（十六进制的数字 ）和数量单位（一般不写），正文部分就是指定长度的实际内容，两部分之间用回车换行(CRLF) 隔开</li>
+<li>两者都出现的时候，Transfer-Encoding优先级高</li>
+</ul>
+<h2 id="http头字段总结"><a href="#http头字段总结" class="headerlink" title="http头字段总结"></a>http头字段总结</h2><ul>
+<li>Accept：告诉web服务器接收什么介质类型，‘/‘表示任何类型， type/* 表示该类型下的所有子类型，type/sub-type。</li>
+<li>Accept-Charset： 浏览器声明自己接收的字符集</li>
+<li>Accept-Ranges：表示服务器是否接收实体一部分（一部分）的请求，bytes：表示接收，none表示不接受</li>
+<li>Age： 当代理服务器用自己缓存的实体去响应请求时候，表明该实体从产生到现在有多长时间</li>
+<li>Content-Encoding：表明web服务器用什么了压缩方法（gzip,deflate)压缩响应的对象</li>
+<li>Content-Language：web服务器告诉浏览器自己响应对象的语言</li>
+<li>Content-Range： WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如：Content-Range: bytes 21010-47021/47022</li>
+<li>Content-Type： WEB 服务器告诉浏览器自己响应的对象的类型。例如：Content-Type：application/xml</li>
+<li>Expired：WEB服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟WEB服务器验证了其有效性后，才能用来响应客户请求。是 HTTP/1.0 的头部。例如：Expires：Sat, 23 May 2009 10:02:12 GMT</li>
+<li>Host：客户端指定自己想访问的WEB服务器的域名/IP 地址和端口号。例如：Host：rss.sina.com.cn</li>
+<li>If-Match：如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的动作。</li>
+<li>If-None-Match：如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求的动作。</li>
+<li>If-Modified-Since：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（比如返回对象），否则返回代码304，告诉浏览器 该对象没有修改。例如：If-Modified-Since：Thu, 10 Apr 2008 09:14:42 GMT</li>
+<li>Last-Modified：WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的</li>
+<li>If-Range：浏览器告诉 WEB 服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者 自己所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一起使用。</li>
+<li>Range：浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪部分。例如：Range: bytes=1173546-</li>
+<li>Referer：浏览器向 WEB 服务器表明自己是从哪个 网页/URL 获得/点击 当前请求中的网址/URL。例如：Referer：<a href="http://www.sina.com/" target="_blank" rel="external">http://www.sina.com/</a></li>
+<li>Pramga：主要使用 Pramga: no-cache，相当于 Cache-Control： no-cache。例如：Pragma：no-cache</li>
+<li>Transfer-Encoding: WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作了怎样的编码，比如是否分块（chunked）。例如：Transfer-Encoding: chunked</li>
+</ul>
+<h2 id="浏览器的缓存机制"><a href="#浏览器的缓存机制" class="headerlink" title="浏览器的缓存机制"></a>浏览器的缓存机制</h2><p>如果是请求头带有Cache-Control:max-age=0代表强制返回最新文件<br>如果是响应头中带有Cache-Control:max-age=0，则代表服务器要求浏览器你在使用本地缓存的时候，必须先和服务器进行一遍通信，将etag、 If-Not-Modified、If-None-Match、If-Modified-Since等字段传递给服务器以便验证当前浏览器端使用的文件是否是最新的,如果是最新的，服务端返回304，否则200，重新下载<br>并且确认浏览器中Disable Cache勾上没</p>
+<p><img src="/images/cache.png"></p>
+<h3 id="强制缓存"><a href="#强制缓存" class="headerlink" title="强制缓存"></a>强制缓存</h3><h4 id="Expires"><a href="#Expires" class="headerlink" title="Expires"></a>Expires</h4><p>服务器返回一个<strong>绝对时间</strong>，然后与下次客户端请求的时间进行对比，如果未过期，直接从本地缓存获取，请求返回200（from Cache）</p>
+<ul>
+<li>缺点： 客户端的时间与服务器的时间相差很大（时钟不同步，跨时区的因素），所以误差大，所以在HTTP1.1版开始，使用Cache-Control: max-age=秒替代</li>
+</ul>
+<h4 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h4><p>服务器返回的是一个<strong>相对时间</strong>，客户端两个间隔请求之差小于Cache-Control中设置的时间差，那么就从本地缓存中取，返回 200 （from Cache)</p>
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>Cache-Control &gt; Expires,Cache-Control的值可以是：</p>
+<ul>
+<li>Public 指示响应可被任何缓存区缓存。</li>
+<li>Private 指示对于单个用户的整个或部分响应消息，不能被共享缓存处理。这允许服务器仅仅描述当前用户的部分响应消息，此响应消息对于其他用户的请求无效。</li>
+<li>no-cache 指示请求或响应消息不能缓存，该选项并不是说可以设置”不缓存“，而是需要和服务器确认</li>
+<li>no-store 在请求消息中发送将使得请求和响应消息都不使用缓存，完全不存下來。</li>
+<li>max-age 指示客户机可以接收生存期不大于指定时间（以秒为单位）的响应。上次缓存时间（客户端的）+max-age（64200s）&lt;客户端当前时间</li>
+<li>min-fresh 指示客户机可以接收响应时间小于当前时间加上指定时间的响应。</li>
+<li>max-stale 指示客户机可以接收超出超时期间的响应消息。如果指定max-stale消息的值，那么客户机可以接收超出超时期指定值之内的响应消息。</li>
+</ul>
+<h3 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h3><p>Last-Modified / If-Modified-Since ： 标识资源的最后修改时间(由服务器返回)， 配合Cache-Control使用</p>
+<h4 id="If-Modified-Since"><a href="#If-Modified-Since" class="headerlink" title="If-Modified-Since**"></a>If-Modified-Since**</h4><blockquote>
+<p>重复请求时，当强缓存失效，发现请求头中有Last-Modified声明，则添加If-Modified-Since，内容为当前请求时间，发送请求，服务器获取请求时间与资源最后修改时间对比：<br>如果最后个性时间大于请求时间，则说明资源更新过，返回资源文件和状态200，<br>如果请求时间大于最后修改时间，则说明资源未修改，返回状态304告知浏览器使用缓存</p>
+</blockquote>
+<p><strong>过程</strong></p>
+<ol>
+<li>浏览器在第一次访问资源时，服务器返回资源的同时，在response header中添加 Last-Modified的header，值是这个资源在服务器上的最后修改时间，浏览器接收后缓存文件和header</li>
+<li>浏览器下一次请求这个资源，浏览器检测到有 Last-Modified这个header，于是添加If-Modified-Since这个header，值是Last-Modified中的值</li>
+<li>服务器再次收到这个资源请求，根据 If-Modified-Since 中的值与服务器中这个资源的最后修改时间对比，如果没有变化，返回304和空的响应体，如果If-Modified-Since的时间小于服务器中这个资源的最后修改时间，说明文件有更新，于是返回新的资源文件和200</li>
+</ol>
+<p>缺点： </p>
+<ul>
+<li>Last-Modified 标注的最后修改只能精确到秒级，如果某些文件在1秒钟以内，被修改多次的话，它将不能准确标注文件的修改时间（无法及时更新文件）</li>
+<li>如果某些文件会被定期生成，当有时内容并没有任何变化，但Last-Modified却改变了，导致文件没法使用缓存，有可能存在服务器没有准确获取文件修改时间，或者与代理服务器时间不一致等情形（无法使用缓存）。</li>
+</ul>
+<p>所以Etag / If-None-Match出现了，配合Cache-Control使用</p>
+<p>Etag: 由服务器返回，内容为资源的唯一标识，生成规则由服务器决定。 Apache中，Etag的值为文件的索引节（INode），大小（Size）和最后修改时间（MTime）进行Hash后得到的。<br>If-None-Match</p>
+<blockquote>
+<p>当资源过期时（使用Cache-Control标识的max-age），发现资源具有Etage声明，则再次向web服务器请求时带上头If-None-Match （Etag的值）。web服务器收到请求后发现有头If-None-Match 则与被请求资源的相应校验串进行比对：<br>如果相同，则返回304<br>如果不同，则返回200和资源文件</p>
+</blockquote>
+<p>Etag是服务器自动生成或者由开发者生成的对应资源在服务器端的唯一标识符，能够更加准确的控制缓存。</p>
+<p><strong>优先级</strong><br>Etag的优先级 大于 Last-Modified的</p>
+<p><strong>过程</strong><br>1.客户端请求一个页面（A）。<br>2.服务器返回页面A，并在给A加上一个ETag，值是这个资源的唯一标识，由服务器端生成。<br>3.客户端展现该页面，并将页面连同ETag一起缓存。<br>4.客户再次请求页面A，并将上次请求时服务器返回的ETag一起传递给服务器。<br>5.服务器检查该ETag，并判断出该页面自上次客户端请求之后还未被修改，直接返回响应304和一个空的响应体。</p>
+<h3 id="用户行为与缓存"><a href="#用户行为与缓存" class="headerlink" title="用户行为与缓存"></a>用户行为与缓存</h3><ul>
+<li>用户在地址栏回车、页面链接跳转、新开窗口、前进后退时，缓存是有效的</li>
+<li>用户点击F5的时候，Last-Modified/Etag是有效的，但是Expires、Cache-Control重置失效</li>
+<li>ctrl+f5缓存全部失效</li>
+</ul>
+<p><img src="/images/userCache.png"></p>
+<h3 id="常见状态码"><a href="#常见状态码" class="headerlink" title="常见状态码"></a>常见状态码</h3><ul>
+<li>200：强缓Expires/Cache-Control存失效时，返回新的资源文件</li>
+<li>304(Not Modified )：协商缓存Last-modified/Etag没有过期时，服务端返回状态码304</li>
+<li>200(from cache): 强缓Expires/Cache-Control两者都存在，未过期，Cache-Control优先Expires时，浏览器从本地获取资源成功</li>
+</ul>
+<p><img src="/images/trangle.png"></p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li><p>一般情况下，使用Cache-Control/Expires会配合Last-Modified/ETag一起使用，因为即使服务器设置缓存时间, 当用户点击“刷新”按钮时，浏览器会忽略缓存继续向服务器发送请求，这时Last-Modified/ETag将能够很好利用304，从而减少响应开销。</p>
+</li>
+<li><p>当用户在按F5进行刷新的时候，会忽略Expires/Cache-Control的设置，会再次发送请求去服务器请求，而Last-Modified/Etag还是有效的，服务器会根据情况判断返回304还是200；</p>
+</li>
+<li><p>而当用户使用Ctrl+F5进行强制刷新的时候，会跳过强缓存和协商缓存，重新从服务器下载资源。</p>
+</li>
+<li><p>分布式系统里多台机器间文件的last-modified必须保持一致，以免负载均衡到不同机器导致比对失败<br>分布式系统尽量关闭掉Etag(每台机器生成的etag都会不一样)</p>
+</li>
+</ul>
+<p><a href="http://coderlt.coding.me/2016/11/21/web-cache/" target="_blank" rel="external">参考</a></p>
+<h2 id="攻击"><a href="#攻击" class="headerlink" title="攻击"></a>攻击</h2><h3 id="CRSF（cross-site-request-Forgery-跨站请求伪造"><a href="#CRSF（cross-site-request-Forgery-跨站请求伪造" class="headerlink" title="CRSF（cross site request Forgery)跨站请求伪造"></a>CRSF（cross site request Forgery)跨站请求伪造</h3><p>登录网站A，生成本地Cookie信息；登录危险网站B，B获取网站A的内容，并向A发送请求操作，若成功，则CRSF过程成功。其中登录B网站，行为可以是点击网站A中的链接链接。 </p>
+<h4 id="CSRF的防范"><a href="#CSRF的防范" class="headerlink" title="CSRF的防范"></a>CSRF的防范</h4><ol>
+<li>验证HTTP Referer字段</li>
+<li>在请求地址中添加token并验证</li>
+</ol>
+<h3 id="XSS攻击（跨脚本攻击）Cross-site-scripting"><a href="#XSS攻击（跨脚本攻击）Cross-site-scripting" class="headerlink" title="XSS攻击（跨脚本攻击）Cross-site scripting"></a>XSS攻击（跨脚本攻击）Cross-site scripting</h3><p>XSS攻击基本原理——代码注入（html,sql)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>come on baby，砸向我！！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="wbcz WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.png" alt="wbcz Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/23/js-es6-ES6之静态和私有/" rel="next" title="ES6之静态、私有">
+                <i class="fa fa-chevron-left"></i> ES6之静态、私有
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/26/js-foundation-DOM事件机制/" rel="prev" title="DOM事件机制">
+                DOM事件机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="wbcz" />
+          <p class="site-author-name" itemprop="name">wbcz</p>
+           
+              <p class="site-description motion-element" itemprop="description">code</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wbcz" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#keep-alive模式"><span class="nav-number">1.</span> <span class="nav-text">keep-alive模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http头字段总结"><span class="nav-number">2.</span> <span class="nav-text">http头字段总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器的缓存机制"><span class="nav-number">3.</span> <span class="nav-text">浏览器的缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#强制缓存"><span class="nav-number">3.1.</span> <span class="nav-text">强制缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Expires"><span class="nav-number">3.1.1.</span> <span class="nav-text">Expires</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-Control"><span class="nav-number">3.1.2.</span> <span class="nav-text">Cache-Control</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优先级"><span class="nav-number">3.1.3.</span> <span class="nav-text">优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协商缓存"><span class="nav-number">3.2.</span> <span class="nav-text">协商缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#If-Modified-Since"><span class="nav-number">3.2.1.</span> <span class="nav-text">If-Modified-Since**</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户行为与缓存"><span class="nav-number">3.3.</span> <span class="nav-text">用户行为与缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见状态码"><span class="nav-number">3.4.</span> <span class="nav-text">常见状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">3.5.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#攻击"><span class="nav-number">4.</span> <span class="nav-text">攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CRSF（cross-site-request-Forgery-跨站请求伪造"><span class="nav-number">4.1.</span> <span class="nav-text">CRSF（cross site request Forgery)跨站请求伪造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSRF的防范"><span class="nav-number">4.1.1.</span> <span class="nav-text">CSRF的防范</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS攻击（跨脚本攻击）Cross-site-scripting"><span class="nav-number">4.2.</span> <span class="nav-text">XSS攻击（跨脚本攻击）Cross-site scripting</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wbcz</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("9dnRw4UJIaovCqeeLI1nTvcL-gzGzoHsz", "UTxROtqVhggNlNyT20INNB7u");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
