@@ -101,4 +101,5 @@ export default {
 3.相机调用，dataURLtoBlob的时候注意把decodeFromBase64的内容的空白字符，包括空格、制表符、换页符替换成'',不然IOS上不兼容
 4.用sqlite插入数据注意插入字符串value中要加''：`INSERT INTO each_msgHealls(dataId, type, text) VALUES('${dataId}', ${type}, '${text}')`,数据冗余的时候，注意清除数据表
 5.WebViewJavascriptBridge挂载了两个方法，一个是callHandler执行函数（调用客户端），包括函数名和函数参数，最后native返回response给H5，比如拍照；一个是registerHandler监听函数(监听客户端），客户端不定时的触发任务，客户端接收到做处理，比如定位之类的需求
-
+6.safari浏览器默认会禁止掉cookie的存储，所以如果登陆采用cookie的方式来做的话，会引起跨域带cookie报错的问题，所以要采用token的形式来做登陆，避免影响前后端分离
+7.UIwebview和wkwebview的比较，wkwebview的性能虽好，但是容易白屏(参考)[https://zhuanlan.zhihu.com/p/24990222]
