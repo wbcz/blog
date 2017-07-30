@@ -3,6 +3,7 @@ title: ES6之静态、私有
 type: "categories"
 categories: [前端, JS, ES6]
 ---
+
 # 静态方法和属性（实例化对象不拥有）
 
 ## 静态方法
