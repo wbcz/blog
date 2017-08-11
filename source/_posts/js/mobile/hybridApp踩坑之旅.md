@@ -4,6 +4,22 @@ type: "categories"
 categories: [前端, H5]
 ---
 
+# 何为JSBridge？
+构建 Native 和非 Native 间消息通信的通道，而且是 双向通信的通道。
+
+# 通信过程
+## JavaScript 调用 Native
+主要有两种：注入 API 和 拦截 URL SCHEME。
+
+### 注入API
+通过webview提供的接口，向JavaScript的Context（window）中注入对象或者方法，让JavaScript调用时，执行相应的Native代码逻辑
+
+### 拦截 URL SCHEME
+Web 端通过某种方式（例如 iframe.src）发送 URL Scheme 请求，之后 Native 拦截到请求并根据 URL SCHEME（包括所带的参数）进行相关操作。
+
+## Native 调用 JavaScript
+执行拼接 JavaScript 字符串，从外部调用 JavaScript 中的方法，因此 JavaScript 的方法必须在全局的 window 上
+
 # native是如何和h5交互细节
 (参考链接)['https://github.com/marcuswestin/WebViewJavascriptBridge']
 
