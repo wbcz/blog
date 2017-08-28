@@ -33,7 +33,7 @@ buf.toString([encoding], [start], [end])
 Buffer.isEncoding(encoding) 判断方法
 不支持的采用第三方模块，iconv和iconv-lite，前者是采用C++调用libiconv库完成，后者是纯Javascript，因为转码耗cpu，在v8的高性能下，少了C++到Javascript的转换，所以后者更好
 
-## buffer的拼接
+# buffer的拼接
 宽字节的中文会造成乱码问题，比如‘大哥大’这个三个字符一共9个字节，我们要是设置，highWaterMark设置为8，那么就有一个字节将会以乱码输出
 
 ## setEncoding() 和 string_decoder()
@@ -42,5 +42,5 @@ setEncoding()是为了让data事件传递的不是一个Buffer对象，而是编
 ## 正确拼接buffer
 用一个数组来存储收到的所有Buffer片段，并且记录下所有片段的总长度，调用Buffer.concat()方法生成一个合并的Buffer对象，Buffer.concat()方法封装了从小buffer对象到大buffer对象的复制过程，实现十分细腻
 
-## buffer与性能
+# buffer与性能
 字符串的传输效率低于buffer对象的传输效率，当读取大文件的时候，highWaterMark值的大小越大，读取速度越快
