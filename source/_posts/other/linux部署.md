@@ -53,3 +53,30 @@ $ ./mongo
 
 # pm2
 pm2 start app.js  用pm2来守护进程
+
+
+# nginx 转发
+linux下路径： /etc/nginx/nginx.conf, 可通过 include /etc/nginx/default.conf， 新建个文件自定义配置。
+以下是部署到同一个域名下的案例
+```
+server {
+        listen       80;
+        server_name  xxxx.alpha.elenet.me; //外网域名
+        location / {
+                root /xcy/;
+                try_files $uri $uri/ /index.html;
+        }
+        location /api/ {
+                proxy_buffer_size 64k;
+                proxy_buffers   32 32k;
+                proxy_busy_buffers_size 128k;
+                proxy_set_header   X-Real-IP            $remote_addr;
+                proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+                proxy_set_header   Host                   $http_host;
+                proxy_set_header   X-NginX-Proxy    true;
+                proxy_set_header   Connection "";
+                proxy_http_version 1.1;
+                proxy_pass   http://localhost:8080/api/;
+        }
+}
+```
