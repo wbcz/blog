@@ -54,7 +54,21 @@ $ ./mongo
 # pm2
 pm2 start app.js  用pm2来守护进程
 
+# 安装nginx
+在线安装： yum -y install nginx
+启动 nginx 服务 ： service nginx start
+停止nginx 服务： service nginx stop
+重启nginx 服务： service nginx restart    / sudo nginx -s reload
+[参考](https://segmentfault.com/a/1190000007116797)
 
+# 报错处理
+If you get following error, when you try to start nginx…
+[emerg]: bind() to 0.0.0.0:80 failed (98: Address already in use)
+You can kill it using:
+sudo fuser -k 80/tcp
+
+And then try restarting nginx again:
+service nginx start
 # nginx 转发
 linux下路径： /etc/nginx/nginx.conf, 可通过 include /etc/nginx/default.conf， 新建个文件自定义配置。
 以下是部署到同一个域名下的案例
@@ -80,3 +94,7 @@ server {
         }
 }
 ```
+
+# 查看端口占用和服务是否启动
+netstat -apn | grep 8080
+或者 sudo netstat -nuptl|grep 8080
