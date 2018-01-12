@@ -139,4 +139,25 @@ console.log(matches);//[ 'name', 'age', 'city' ]
 
 ```
 
+### 模板变量替换
+```
+var str = 'woshi{name}, 我的工作是{job}'
+var obj = {name: 'wbcz',job: '秦端'}
 
+function render(str, obj) {
+    const tmp = /\{.*?\}/g.exec(str)
+    if (!tmp) {
+        return str
+    }
+    const attr = tmp[0].match(/[^\{][^}]+/g)[0]
+    for(const key in obj) {
+        if (attr == key) {
+            var reg = new RegExp("" + tmp[0] + "", "g")
+            str = str.replace(reg, obj[attr])
+        }
+    }
+    return render(str, obj)
+}
+
+render(str, obj)
+```
