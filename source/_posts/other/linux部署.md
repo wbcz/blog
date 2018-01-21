@@ -56,6 +56,8 @@ pm2 start app.js  用pm2来守护进程
 
 # 安装nginx
 在线安装： yum -y install nginx
+如果centos里面没有nginx, 先执行：yum install epel-release
+
 启动 nginx 服务 ： service nginx start
 停止nginx 服务： service nginx stop
 重启nginx 服务： service nginx restart    / sudo nginx -s reload
