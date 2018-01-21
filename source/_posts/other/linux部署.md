@@ -59,6 +59,7 @@ pm2 start app.js  用pm2来守护进程
 如果centos里面没有nginx, 先执行：yum install epel-release
 
 启动 nginx 服务 ： service nginx start
+centos: systemctl start nginx.service
 停止nginx 服务： service nginx stop
 重启nginx 服务： service nginx restart    / sudo nginx -s reload
 [参考](https://segmentfault.com/a/1190000007116797)
@@ -71,6 +72,7 @@ sudo fuser -k 80/tcp
 
 And then try restarting nginx again:
 service nginx start
+
 # nginx 转发
 linux下路径： /etc/nginx/nginx.conf, 可通过 include /etc/nginx/default.conf， 新建个文件自定义配置。
 以下是部署到同一个域名下的案例
