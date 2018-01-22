@@ -106,7 +106,9 @@ netstat -apn | grep 8080
 cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"
 # https配置
 (参考)[https://github.com/xdtianyu/scripts/blob/master/lets-encrypt/README-CN.md]
+
 letsencrypt.conf里注意配置： 
+
 ```
 DOMAIN_DIR="/var/www/challenges/xxx.me"
 ```
@@ -117,7 +119,7 @@ location /.well-known/acme-challenge/{
         try_files $uri = 404;
 }
 ```
-Nginx配置
+Nginx加点配置
 ```
         listen       443 ssl;
         server_name  wbcz.me;
