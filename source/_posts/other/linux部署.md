@@ -104,3 +104,25 @@ netstat -apn | grep 8080
 或者 sudo netstat -nuptl|grep 8080
 # ssh 密码保存登录
 cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+# https配置
+(参考)[https://github.com/xdtianyu/scripts/blob/master/lets-encrypt/README-CN.md]
+letsencrypt.conf里注意配置： 
+```
+DOMAIN_DIR="/var/www/challenges/xxx.me"
+```
+nginx匹配上面目录配置： 
+```
+location /.well-known/acme-challenge/{
+        alias /var/www/challenges/xxx.me/.well-known/acme-challenge/;
+        try_files $uri = 404;
+}
+```
+Nginx配置
+```
+        listen       443 ssl;
+        server_name  wbcz.me;
+        ssl_certificate /root/wbcz.chained.crt;
+        ssl_certificate_key /root/wbcz.me.key;
+```
+
+
