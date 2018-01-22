@@ -102,3 +102,5 @@ server {
 # 查看端口占用和服务是否启动
 netstat -apn | grep 8080
 或者 sudo netstat -nuptl|grep 8080
+# ssh 密码保存登录
+cat ~/.ssh/id_rsa.pub | ssh demo@198.51.100.0 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >>  ~/.ssh/authorized_keys"
