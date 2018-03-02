@@ -1,10 +1,4 @@
----
-title: Docker
-type: "categories"
-categories: 其他
----
-
-# docker
+# docker是什么
 可以简单的认为docker容器是一个虚拟机，封装就是把这个虚拟机打包，打包后能在任何系统跑，docker装上即用。也可以形象的比喻成一个集装箱，把所有货物都打包好放到箱子里，不需要再分类运输，集装箱不互相影响
 
 # 好处
@@ -15,11 +9,10 @@ categories: 其他
 # docker和虚拟机比较
 1. 虚拟机是虚拟出一套硬件后，在其上运行一个完整操作系统，在该系统上再运行所需应用进程
 2. 容器内的应用进程直接运行于宿主的内核，容器内没有自己的内核，而且也没有进行硬件虚拟
-图：
 <img src='https://delimont-flow.alpha.elenet.me/static/upload/QQ20180226-120821.png'/>
 <img src='https://delimont-flow.alpha.elenet.me/static/upload/QQ20180226-120843.png'/>
 <img src='https://delimont-flow.alpha.elenet.me/static/upload/QQ20180226-121433.png'/>
-# Docker架构
+# docker架构
 <img src='https://delimont-flow.alpha.elenet.me/static/upload/QQ20180302-104135.png'/>
 <img src='https://delimont-flow.alpha.elenet.me/static/upload/QQ20180302-104203.png'/>
 
@@ -40,8 +33,6 @@ Docker 镜像是一个特殊的文件系统，除了提供容器运行时所需�
 
 ## 使用镜像
 ### 获取镜像
-docker pull
-# Docker指令
 ```
 docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
 docker pull ubuntu:16.04
@@ -66,34 +57,37 @@ docker image ls -f since=mongo:3.2
 docker image ls -f before=mongo:3.2
 ```
 ### 删除本地镜像
+```
 docker image rm [选项] <镜像1> [<镜像2> ...]
 docker image rm ID
 docker image rm 镜像名
 docker image rm 摘要
 docker rmi 镜像名
-
-### Dockerfile定制镜像
+```
+# Docker指令
+## Dockerfile定制镜像
+```
 FROM 指定基础镜像
 RUN 执行命令
 构建镜像 docker build -t nginx:v3 .
-
-### COPY 复制文件
+```
+## COPY 复制文件
 1. COPY <源路径>... <目标路径>
 ```
 COPY package.json /usr/src/app/
 ```
 2. 相对于工作目录的相对路径（工作目录可以用 WORKDIR
 3. 各种元数据都会保留。比如读、写、执行权限、文件变更时间等
-### ADD
+## ADD
 Add 比COPY多了些特性，比如 <源路径> 可以是一个 URL
-### CMD
+## CMD
 1. shell： CMD <命令>
 2. exec : CMD ["可执行文件", "参数1","参数2"]
 ```
 CMD echo $HOME
 CMD [ "sh", "-c", "echo $HOME" ]
 ```
-### ENV
+## ENV
 ```
 ENV NODE_VERSION 7.2.0
 或者ENV NODE_VERSION=7.2.0
@@ -101,7 +95,6 @@ ENV NODE_VERSION 7.2.0
 ```
 # 操作容器
 ## 启动
--t 选项让Docker分配一个伪终端（pseudo-tty）并绑定到容器的标准输入上， -i 则让容器的标准输入保持打开。
 ```
 $ docker container run \
   -d \
@@ -111,12 +104,18 @@ $ docker container run \
   nginx
 ```
 ## 重启
+```
 docker container start
+```
 ## 终止
+```
 docker stop ID
+```
 ## 进入容器
+```
 docker attach ID  /exit 会导致容器退出
 docker exec -it ID  /exit 不会导致容器退出
+```
 
 # Docker Compose 
 ## 安装和卸载
@@ -130,10 +129,16 @@ $ sudo chmod +x /usr/local/bin/docker-compose
 $ sudo rm /usr/local/bin/docker-compose
 ```
 ## 使用
+```
 docker-compose up
 docker-compose down
 docker-compose --version
-
-[友情链接](https://segmentfault.com/a/1190000011263661#articleHeader14)
+```
 
 # 项目实践
+
+  [1]: /img/bV4JoE
+  [2]: /img/bV4JpU
+  [3]: /img/bV4Jp8
+  [4]: /img/bV4Jqi
+  [5]: /img/bV4Jqk
