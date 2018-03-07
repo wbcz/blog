@@ -63,6 +63,19 @@ centos: systemctl start nginx.service
 停止nginx 服务： service nginx stop
 重启nginx 服务： service nginx restart    / sudo nginx -s reload
 [参考](https://segmentfault.com/a/1190000007116797)
+# Nginx 重启时丢失nginx.pid文件解决方法
+停止操作是通过向nginx进程发送信号来实现的，具体错误信息如下：
+[root@yoodb.com ~]# /usr/local/nginx/sbin/nginx -s reload
+nginx: [error] open() "/usr/local/nginx/logs/nginx.pid" failed (2: No such file or directory)
+
+步骤1：
+查询nginx主进程号，代码如下:
+ps -ef | grep nginx
+在进程列表里 面找master进程，它的编号就是主进程号了。
+
+步骤2：
+发送信号，从容停止Nginx：
+kill -QUIT 主进程号
 
 # 报错处理
 If you get following error, when you try to start nginx…
