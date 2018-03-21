@@ -98,6 +98,6 @@ return $.html()
 
 浏览器标准做了些什么CSP（内容安全策略）
 指定哪些内容可以执行
-Content-Security-Policy default-src  self
+首部字段设置：Content-Security-Policy default-src  self
 
 
